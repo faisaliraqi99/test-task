@@ -6,7 +6,8 @@ import Product from '../../components/Product';
 class ProductsContainer extends Component {
   state = {
     products: null,
-    productsLength: 0
+    productsLength: 0,
+    productsView: 'grid'
   }
   componentDidMount() {
     this.fetchData()
@@ -65,6 +66,12 @@ class ProductsContainer extends Component {
         newArr.reverse();
         this.setState({ newArr });
         break;
+      case 'grid':
+        this.setState({...this.state, productsView: val})
+        break;
+      case 'list':
+        this.setState({...this.state, productsView: val})
+        break;
       default:
         this.fetchData()
         break;
@@ -72,13 +79,24 @@ class ProductsContainer extends Component {
   }
   render() {
     const all = () => {
-      if(this.state.products !== null) {
-        const items = this.state.products.map((item,index) => {
-          return <Product singleItem={item} favChange={() => this.favChange(index)} key={index} />
-        });
-        return items;
-      } else {
-        return 'Products is empty';
+      if(this.state.productsView === 'grid') {
+        if (this.state.products !== null) {
+          const items = this.state.products.map((item, index) => {
+            return <Product listOrGrid={this.state.productsView} singleItem={item} favChange={() => this.favChange(index)} key={index} />
+          });
+          return items;
+        } else {
+          return 'Products is empty';
+        }
+      } else if(this.state.productsView === 'list') {
+        if (this.state.products !== null) {
+          const items = this.state.products.map((item, index) => {
+          return <Product listOrGrid={this.state.productsView} singleItem={item} favChange={() => this.favChange(index)} key={index} />
+          });
+          return items;
+        } else {
+          return 'Products is empty';
+        }
       }
     }
     return (
@@ -86,6 +104,10 @@ class ProductsContainer extends Component {
         <header className="products-header">
           <div className="products-result">{this.state.productsLength} results</div>
           <div className="products-sort">
+            <select onChange={(event) => this.checkSortAndTypeView(event)} className="products-select">
+              <option value="grid">Type: Grid</option>
+              <option value="list">Type: List</option>
+            </select>
             <select onChange={(event) => this.checkSortAndTypeView(event)} className="products-select">
               <option value="default">Sort by: MostRelevant</option>
               <option value="name">Sort by: Name (ascending)</option>

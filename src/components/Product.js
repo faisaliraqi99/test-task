@@ -43,8 +43,19 @@ const Product = (props) => {
   // const currency = () => {
   //   return <img className="product-currency" src={fount} alt="currency" />
   // }
+  const gridOrList = () => {
+    const type = props.listOrGrid;
+    switch (type) {
+      case 'grid':
+        return 'product-item'
+      case 'list':
+        return 'product-item list'
+      default:
+        return 'product-item'
+    }
+  }
   return(
-    <li className="product-item">
+    <li className={gridOrList()}>
       <a className="product-link" onClick={(event) => event.preventDefault()} href={myData.url}>
         <div className="product-img" style={{backgroundImage: `url(${myData.picture})`}}>
         {productIsFav()}
