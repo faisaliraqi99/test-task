@@ -11,11 +11,15 @@ const Product = (props) => {
 
   const productIsFav = () => {
     if(myData.isFav) {
-      return <div className="product-fav"
+      return <div
+        onClick={props.favChange}
+        className="product-fav"
         style={{ backgroundImage: `url(${isFavImg})`}}
       ></div>
     } else {
-      return <div className="product-fav"
+      return <div 
+        onClick={props.favChange}
+        className="product-fav"
         style={{ backgroundImage: `url(${isNotFavImg})` }}
       ></div>
     }
@@ -41,21 +45,23 @@ const Product = (props) => {
   // }
   return(
     <li className="product-item">
-      <div className="product-img" style={{backgroundImage: `url(${myData.picture})`}}>
-      {productIsFav()}
-      </div>
-      <div className="product-info">
-        <h3 className="product-title">{myData.name}</h3>
-        <div className="product-size">{myData.size}</div>
-        <div className="product-rating">
-          {rating()}
+      <a className="product-link" onClick={(event) => event.preventDefault()} href={myData.url}>
+        <div className="product-img" style={{backgroundImage: `url(${myData.picture})`}}>
+        {productIsFav()}
         </div>
-        <div className="product-price__container">
-          <div className="product-price">{myData.price}</div>
-          <div className="product-oldPrice">{myData.oldPrice}</div>
-          {savings()}
+        <div className="product-info">
+          <h3 className="product-title">{myData.name}</h3>
+          <div className="product-size">{myData.size}</div>
+          <div className="product-rating">
+            {rating()}
+          </div>
+          <div className="product-price__container">
+            <div className="product-price">{myData.price}</div>
+            <div className="product-oldPrice">{myData.oldPrice}</div>
+            {savings()}
+          </div>
         </div>
-      </div>
+      </a>
     </li>
   );
 }

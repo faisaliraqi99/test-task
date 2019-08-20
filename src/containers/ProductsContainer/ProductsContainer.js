@@ -9,17 +9,73 @@ class ProductsContainer extends Component {
     productsLength: 0
   }
   componentDidMount() {
+    this.fetchData()
+  }
+  fetchData = () => {
     fetch('http://localhost:3000/products')
       .then(response => response.json())
-      .then(result => this.setState({ ...this.state, products: result, productsLength: result.length}));
+      .then(result => this.setState({ ...this.state, products: result, productsLength: result.length }));
+  }
+  favChange = index => {
+    const newProducts = this.state.products;
+    const newObj = newProducts[index];
+    const idObj = newObj.id
+    newObj.isFav = !newProducts[index].isFav;
+    this.setState({
+      ...this.state,
+      products: newProducts
+    });
+    const json = JSON.stringify(newObj);
+    fetch(`http://localhost:3000/products/${idObj}`, {
+      method: 'PUT',
+      headers: {
+        "Content-type": 'application/json'
+      },
+      body: json
+    })
+  }
+  checkSortAndTypeView = val => {
+    const selectedIndex = val.target.selectedIndex;
+    val = val.target[selectedIndex].value;
+    const arr = this.state.products;
+    let newArr = [];
+    switch (val) {
+      case 'name':
+        newArr = arr.sort((a,b) => {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        this.setState({newArr});
+        break;
+      case 'priceAsc':
+        newArr = arr.sort((a, b) => {
+          let newA = +a.price.slice(1);
+          let newB = +b.price.slice(1);
+          return newA - newB;
+        });
+        this.setState({ newArr });
+        break;
+      case 'priceDesc':
+        newArr = arr.sort((a, b) => {
+          let newA = +a.price.slice(1);
+          let newB = +b.price.slice(1);
+          return newA - newB;
+        });
+        newArr.reverse();
+        this.setState({ newArr });
+        break;
+      default:
+        this.fetchData()
+        break;
+    }
   }
   render() {
     const all = () => {
       if(this.state.products !== null) {
         const items = this.state.products.map((item,index) => {
-          return <Product singleItem={item} key={index} />
+          return <Product singleItem={item} favChange={() => this.favChange(index)} key={index} />
         });
-        // console.log(items);
         return items;
       } else {
         return 'Products is empty';
@@ -27,13 +83,22 @@ class ProductsContainer extends Component {
     }
     return (
       <div className="products-container">
-        <div className="products-header">
+        <header className="products-header">
           <div className="products-result">{this.state.productsLength} results</div>
-          <div className="products-sort">some element</div>
-        </div>
-        <ul className="products-list">
-          {all()}
-        </ul>
+          <div className="products-sort">
+            <select onChange={(event) => this.checkSortAndTypeView(event)} className="products-select">
+              <option value="default">Sort by: MostRelevant</option>
+              <option value="name">Sort by: Name (ascending)</option>
+              <option value="priceAsc">Sort by: Price (ascending)</option>
+              <option value="priceDesc">Sort by: Price (descending)</option>
+            </select>
+          </div>
+        </header>
+        <main>
+          <ul className="products-list">
+            {all()}
+          </ul>
+        </main>
       </div>
     );
   }
