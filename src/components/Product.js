@@ -33,7 +33,7 @@ const Product = (props) => {
   }
   const savings = () => {
     if (myData.savings !== undefined) return(
-      <div className="product-savings">Yout save {myData.savings}</div>
+      <div className="product-savings">You save {myData.savings}</div>
     );
   }
   // const currency = () => {
