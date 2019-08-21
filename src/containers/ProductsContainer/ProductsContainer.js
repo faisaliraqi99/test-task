@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import './ProductsContainer.css';
 import Product from '../../components/Product';
 
 class ProductsContainer extends Component {
@@ -104,6 +104,7 @@ class ProductsContainer extends Component {
         <header className="products-header">
           <div className="products-result">{this.state.productsLength} results</div>
           <div className="products-sort">
+            <Link to="/form">Link to form</Link>
             <select onChange={(event) => this.checkSortAndTypeView(event)} className="products-select">
               <option value="grid">Type: Grid</option>
               <option value="list">Type: List</option>
