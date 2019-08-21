@@ -83,8 +83,8 @@ class Form extends Component {
             <input onInput={(event) => this.validation(event)} placeholder="Your name" className="name" type="text" />
             <input onInput={(event) => this.validation(event)}placeholder="Your surname" className="surname" type="text" />
             <input onInput={(event) => this.validation(event)} placeholder="Your email" className="email" type="text" />
-            <input onInput={(event) => this.validation(event)} placeholder="Your phone" className="phone" type="text" />
-            <input onInput={(event) => this.validation(event)} placeholder="Password" className="password" type="password" />
+            <input onInput={(event) => this.validation(event)} placeholder="Your phone(only + and numbers)" className="phone" type="text" />
+            <input onInput={(event) => this.validation(event)} placeholder="Password (min 8 chars and include special char)" className="password" type="password" />
             {/* <button className="form-btn"></button> */}
         </form>
       </div>
